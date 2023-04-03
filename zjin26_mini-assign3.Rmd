@@ -1,0 +1,96 @@
+---
+title: "zjin26_mini-assign3"
+author: "Vincent Jin"
+date: "2023-04-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ============================================================ 
+# 	Mini-assignment # 3
+# ============================================================ 
+
+## Vincent Jin
+
+# (1) create a vector containing numbers 0 to 10, 100 to 200, and 900 to 1000 (without entering all numbers individually)
+
+``` {r}
+v <- c(0:10, 100:200, 900:1000)
+```
+
+# (2) find the min, max, sum, average and quartiles of the last vector
+
+``` {r}
+min(v)
+max(v)
+sum(v)
+mean(v)
+quantile(v)
+```
+
+# (3) find the min, max, sum, average and quartiles of the following vector: c(rnorm(1000,500,10))  [note that rnorm command is generating random numbers every time you run it!]
+
+``` {r}
+v1 <- c(rnorm(1000,500,10))
+min(v1)
+max(v1)
+sum(v1)
+mean(v1)
+quantile(v1)
+```
+
+# (4) create a data.frame with four columns (age, sex, cost, risk) with 1000 rows, as follow: 
+# first column randomly picked from 18 to 65; 
+# second column random 'F' or 'M' or NA (i.e., missing); 
+# third column with random numbers between 1000 and 100,000 (round to 1 digit); and, 
+# fourth column with random number between 0 and 1 (do NOT round)
+
+``` {r}
+df1 <- data.frame(age = sample(18:65, 1000, replace = T),
+           sex = sample(c('M','F', NA), 1000, replace = T),
+           cost = round(runif(1000, min = 1000, max = 1000000), 1),
+           risk = runif(1000, min = 0, max = 1))
+```
+
+# (5) assign the previous data.frame to a variable such as x
+# get the mean of all columns in the data.frame
+# count the number of F and M and NA (find online how to count NA in the table command)
+# set your seed number to 100
+
+``` {r}
+set.seed(100)
+x <- data.frame(age = sample(18:65, 1000, replace = T),
+           sex = sample(c('M','F', NA), 1000, replace = T),
+           cost = round(runif(1000, min = 1000, max = 1000000), 1),
+           risk = runif(1000, min = 0, max = 1))
+col <- names(x)
+for (i in col) {
+  if (typeof(x[[i]]) != "character") {  
+    cat(paste("the mean of", i, "is:\n"))
+    print(mean(x[[i]]))
+  }
+}
+table(x$sex, useNA = "always")
+```
+
+# (6) get the quartiles of the cost and risk columns before and after log transformation
+
+``` {r}
+col <- c('cost', 'risk')
+for (i in col) {
+  cat(paste("the quartiles of", i, "is:\n"))
+  print(quantile(x[[i]]))
+  cat(paste("the quartiles of", i, "after log transformation is:\n"))
+  print(quantile(log(x[[i]])))
+}
+```
+
+# (7) count how many of the costs are more than mean of cost 
+# avoid entering a plain number in the comparison
+
+``` {r}
+sum(x$cost > mean(x$cost))
+```
